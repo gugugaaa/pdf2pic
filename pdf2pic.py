@@ -64,9 +64,10 @@ def log_index(csv_path, start, end):
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: pdf2pic <path-to.pdf>")
+        print("Usage: pdf2pic <path-to.pdf> [-i|--index]")
         sys.exit(1)
 
+    enable_index = any(arg in {"-i", "--index"} for arg in sys.argv[2:])
     pdf = Path(sys.argv[1]).resolve()
     if not pdf.exists():
         print(f"not found: {pdf}")
@@ -125,7 +126,8 @@ def main():
                 time.sleep(0.6)  # let clipboard history register previous item
 
             to_clipboard(cat)
-            log_index(idx_csv, cs, ce)
+            if enable_index:
+                log_index(idx_csv, cs, ce)
             label = f"{cs}-{ce}" if cs != ce else str(cs)
             print(f"  → {label}.png  (copied)")
 
