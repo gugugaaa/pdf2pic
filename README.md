@@ -11,6 +11,8 @@
 
 > 也许这是人工对重点/分段的划分？看上去是不错的corpus...默认关闭
 
+<img src="https://i.ibb.co/FLFDnPSJ/1234324.png" alt="win+v的效果图">
+
 ## 用法
 
 ### 安装
