@@ -20,6 +20,7 @@
 ```powershell
 .\install.ps1
 ```
+
 会自动 uv，注册到 %LOCALAPPDATA%/pdf2pic，添加 PATH，无需 UAC
 
 ### 使用
@@ -29,6 +30,7 @@ pdf2pic C:\Users\your-name\Documents\example.pdf
 # 进入交互模式
 > 13,8          # 默认每3页一张长图
 > 13,8 -l2      # 每2页一张长图
+> 1,1 -c        # 同时保存到 Pictures\Screenshots
 > q             # 退出
 
 # 保存 index
@@ -36,5 +38,6 @@ pdf2pic C:\Users\your-name\Documents\example.pdf -i
 ```
 
 ## 说明
+
 - 只支持windows，因为是pwsh练手用的
 - 我没有写打印pdf，因为兼容性差。建议手动打印。

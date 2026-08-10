@@ -62,6 +62,18 @@ def log_index(csv_path, start, end):
         w.writerow([datetime.now().isoformat(timespec="seconds"), start, end, ""])
 
 
+def screenshot_path(pdf, start, end):
+    screenshots = Path.home() / "Pictures" / "Screenshots"
+    screenshots.mkdir(parents=True, exist_ok=True)
+    label = f"p{start}" if start == end else f"p{start}-{end}"
+    candidate = screenshots / f"{pdf.stem}_{label}.png"
+    suffix = 2
+    while candidate.exists():
+        candidate = screenshots / f"{pdf.stem}_{label}_{suffix}.png"
+        suffix += 1
+    return candidate
+
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: pdf2pic <path-to.pdf> [-i|--index]")
@@ -78,7 +90,7 @@ def main():
     idx_csv = pdf.parent / f"{pdf.stem}.index.csv"
 
     print(f"[pdf2pic] {pdf.name} ({n} pages)")
-    print("  format: <start>,<count> [-l<N>]  default -l2")
+    print("  format: <start>,<count> [-l<N>] [-c]  default -l3")
     print("  quit: q\n")
 
     while True:
@@ -92,6 +104,7 @@ def main():
         # parse
         le = 3  # default long-edge
         tokens = raw.split()
+        save_screenshot = any(t.lower() == "-c" for t in tokens[1:])
         for t in tokens[1:]:
             if t.lower().startswith("-l"):
                 try:
@@ -128,6 +141,10 @@ def main():
             to_clipboard(cat)
             if enable_index:
                 log_index(idx_csv, cs, ce)
+            if save_screenshot:
+                output = screenshot_path(pdf, cs, ce)
+                cat.save(output, "PNG")
+                print(f"  saved: {output}")
             label = f"{cs}-{ce}" if cs != ce else str(cs)
             print(f"  → {label}.png  (copied)")
 
